@@ -1,6 +1,6 @@
-import cv2
-import numpy as np
 from icecream import ic
+import numpy as np
+import cv2
 
 
 def select_rect(event, x, y, flags, param):
