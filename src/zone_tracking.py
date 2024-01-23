@@ -5,12 +5,14 @@ import sys
 
 class ZoneTracker:
 
-    def __init__(self):
+    def __init__(self, camera):
+        self.camera = camera
+
         self.rect_start = (-1, -1)
         self.rect_end = (-1, -1)
         self.selecting_rect = False
 
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(self.camera)
         cv2.namedWindow('Frame')
         cv2.setMouseCallback('Frame', self.select_rect)
 

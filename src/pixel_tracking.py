@@ -4,13 +4,15 @@ import cv2
 
 class PixelTracker:
 
-    def __init__(self):
+    def __init__(self, camera):
+        self.camera = camera
+
         self.point_selected = False
         self.point = None
         self.old_points = None
         self.old_frame = None
 
-        self.cap = cv2.VideoCapture(0)
+        self.cap = cv2.VideoCapture(self.camera)
         cv2.namedWindow('Frame')
         cv2.setMouseCallback('Frame', self.select_point)
         self.lk_params = dict(winSize=(15, 15),
@@ -50,5 +52,5 @@ class PixelTracker:
 
 
 if __name__ == '__main__':
-    tracker = PixelTracker()
+    tracker = PixelTracker(0)
     tracker.main()

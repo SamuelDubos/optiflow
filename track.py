@@ -5,8 +5,9 @@ import sys
 
 if __name__ == '__main__':
     ITEM = sys.argv[1]
-    MESH = True if ITEM == 'zone' and len(sys.argv) >= 3 and sys.argv[2] == 'mesh' else False
+    CAMERA = int(sys.argv[2])
+    MESH = True if ITEM == 'zone' and len(sys.argv) >= 4 and sys.argv[3] == 'mesh' else False
     if ITEM == 'pixel':
-        PixelTracker().main()
+        PixelTracker(CAMERA).main()
     elif ITEM == 'zone':
-        ZoneTracker().main(MESH)
+        ZoneTracker(CAMERA).main(MESH)
