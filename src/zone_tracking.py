@@ -8,8 +8,8 @@ class ZoneTracker:
     def __init__(self, camera):
         self.camera = camera
 
-        self.rect_start = (-1, -1)
-        self.rect_end = (-1, -1)
+        self.rect_start = None
+        self.rect_end = None
         self.selecting_rect = False
 
         self.cap = cv2.VideoCapture(self.camera)
@@ -18,13 +18,14 @@ class ZoneTracker:
 
     def select_rect(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
-            print(f'Click down on {x, y}')
-            self.rect_start = (x, y)
-            self.selecting_rect = True
-        elif event == cv2.EVENT_LBUTTONUP:
-            print(f'Click up on {x, y}')
-            self.rect_end = (x, y)
-            self.selecting_rect = False
+            if not self.selecting_rect:
+                print(f'Zone begins {x, y}')
+                self.rect_start = (x, y)
+                self.selecting_rect = True
+            else:
+                print(f'Zone ends {x, y}')
+                self.rect_end = (x, y)
+                self.selecting_rect = False
 
     def generate_mesh(self, grid_size=10):
         points = []
@@ -38,7 +39,7 @@ class ZoneTracker:
     def main(self, mesh=False):
         while True:
             _, frame = self.cap.read()
-            if self.rect_start[0] != -1 and self.rect_end[0] != -1:
+            if self.rect_start is not None and self.rect_end is not None:  # TODO: Handle second rectangle
                 cv2.rectangle(frame, self.rect_start, self.rect_end, (0, 255, 0), 2)
                 if mesh:
                     tracked_points = self.generate_mesh()
@@ -52,5 +53,5 @@ class ZoneTracker:
 
 
 if __name__ == '__main__':
-    tracker = ZoneTracker()
+    tracker = ZoneTracker(camera=0)
     tracker.main(bool(sys.argv[1]) if len(sys.argv) >= 2 else False)

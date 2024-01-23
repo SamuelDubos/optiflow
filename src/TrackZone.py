@@ -21,7 +21,7 @@ def generate_mesh(rect_start, rect_end, grid_size=10):
     y_range = np.linspace(rect_start[1], rect_end[1], grid_size)
     for y in y_range:
         for x in x_range:
-            points.append((int(x), int(y)))
+            points.append([[int(x), int(y)]])
     return points
 
 
@@ -33,6 +33,7 @@ lk_params = dict(winSize=(15, 15), maxLevel=2, criteria=(cv2.TERM_CRITERIA_EPS |
 RECT_START = (-1, -1)
 RECT_END = (-1, -1)
 selecting_rect = False
+old_frame = None
 
 tracked_points = []
 
@@ -43,7 +44,7 @@ while True:
         cv2.rectangle(frame, RECT_START, RECT_END, (0, 255, 0), 2)
 
         if not selecting_rect:
-            tracked_points = generate_mesh(RECT_START, RECT_END)
+            tracked_points = generate_mesh(RECT_START, RECT_END, grid_size=2)
 
         if tracked_points:
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -52,11 +53,14 @@ while True:
                 print('Old frame was not right')
                 old_frame = gray_frame.copy()
             print('Now fixed')
-            ic(np.array(tracked_points).shape, np.array(tracked_points).T)
-            new_points, status, _ = cv2.calcOpticalFlowPyrLK(old_frame, gray_frame, np.array(tracked_points), None, **lk_params)
+            tracked_points = np.array(tracked_points).astype(np.float32)
+            ic(tracked_points.shape, tracked_points)
+            ic(type(tracked_points[0, 0, 0]))
 
-            good_new = new_points[status == 1]
-            good_old = np.array(tracked_points)[status.flatten() == 1]
+            new_points, status, _ = cv2.calcOpticalFlowPyrLK(old_frame, gray_frame, tracked_points, None, **lk_params)
+            print('passed')
+            good_new = new_points[status.flatten() == 1]
+            good_old = tracked_points[status.flatten() == 1]
 
             for new, old in zip(good_new, good_old):
                 a, b = new.ravel()
@@ -67,10 +71,10 @@ while True:
             tracked_points = good_new.tolist()
 
     # old_frame = gray_frame.copy()
-    cv2.imshow("Frame", frame)
+    cv2.imshow('Frame', frame)
 
     key = cv2.waitKey(1) & 0xFF
-    if key == ord('s'):
+    if key in [ord('s')]:
         break
 
 cap.release()
