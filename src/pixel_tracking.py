@@ -2,7 +2,7 @@ import numpy as np
 import cv2
 
 
-class PixelTracking:
+class PixelTracker:
 
     def __init__(self):
         self.point_selected = False
@@ -50,5 +50,5 @@ class PixelTracking:
 
 
 if __name__ == '__main__':
-    tracker = PixelTracking()
+    tracker = PixelTracker()
     tracker.main()
