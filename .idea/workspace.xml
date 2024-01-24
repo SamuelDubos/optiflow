@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f6490cf8-82f3-4489-8baf-4e8bb1e072d9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/in_progress.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/pixel_tracking.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/pixel_tracking.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/poi_identifying.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/poi_identifying.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/poi_tracker.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/poi_tracker.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/zone_delimiting.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/zone_delimiting.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/track.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +43,29 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
-  <component name="RunManager" selected="Python.poi_tracker">
+  <component name="RunManager" selected="Python.in_progress">
+    <configuration name="in_progress" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="OptiFlow" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="C:\Users\samue\Documents\Code\PyCharm\GitHub\OptiFlow\src\in_progress.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="OptiFlow" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -157,35 +176,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="zone_delimiting" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="OptiFlow" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/src" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="C:\Users\samue\Documents\Code\PyCharm\GitHub\OptiFlow\src\zone_delimiting.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.poi_tracker" />
+        <item itemvalue="Python.in_progress" />
         <item itemvalue="Python.pixel_tracking" />
+        <item itemvalue="Python.poi_tracker" />
         <item itemvalue="Python.poi_identifying (1)" />
         <item itemvalue="Python.poi_identifying" />
-        <item itemvalue="Python.zone_delimiting" />
       </list>
     </recent_temporary>
   </component>
@@ -199,7 +196,7 @@
       <updated>1706015912101</updated>
       <workItem from="1706015913656" duration="170000" />
       <workItem from="1706016141468" duration="38000" />
-      <workItem from="1706095428287" duration="16396000" />
+      <workItem from="1706095428287" duration="17770000" />
     </task>
     <servers />
   </component>
@@ -207,10 +204,10 @@
     <option name="version" value="3" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/SelectZone_py$pixel_tracking.coverage" NAME="pixel_tracking Coverage Results" MODIFIED="1706132468950" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/SelectZone_py$pixel_tracking.coverage" NAME="pixel_tracking Coverage Results" MODIFIED="1706136556975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/SelectZone_py$poi_identifying__1_.coverage" NAME="poi_identifying (1) Coverage Results" MODIFIED="1706132250299" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/SelectZone_py$zone_tracking.coverage" NAME="zone_tracking Coverage Results" MODIFIED="1706109162907" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
-    <SUITE FILE_PATH="coverage/SelectZone_py$work.coverage" NAME="work Coverage Results" MODIFIED="1706132648821" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
+    <SUITE FILE_PATH="coverage/SelectZone_py$work.coverage" NAME="work Coverage Results" MODIFIED="1706136810365" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/src" />
     <SUITE FILE_PATH="coverage/OptiFlow$main.coverage" NAME="main Coverage Results" MODIFIED="1706016034168" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
