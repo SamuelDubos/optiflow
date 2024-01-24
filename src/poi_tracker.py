@@ -2,18 +2,23 @@ import numpy as np
 import cv2
 
 
-class PoiIdentifier:
+class PoiTracker:
+
     def __init__(self, camera, num_points):
         self.camera = camera
         self.num_points = num_points
         self.rect_start = None
         self.rect_end = None
         self.selecting_rect = False
-        self.tracking_points = []
+        self.tracking_points = None
+        self.old_frame = None
 
         self.cap = cv2.VideoCapture(self.camera)
         cv2.namedWindow('Frame')
         cv2.setMouseCallback('Frame', self.select_rect)
+        self.lk_params = dict(winSize=(15, 15),
+                              maxLevel=2,
+                              criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
     def select_rect(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
@@ -39,16 +44,28 @@ class PoiIdentifier:
             corners = corners.reshape(-1, 2) + np.array([x_min, y_min])
             corners[:, 0] = np.clip(corners[:, 0], x_min, x_max)
             corners[:, 1] = np.clip(corners[:, 1], y_min, y_max)
-            return corners.astype(int)
+            return np.array([[corner] for corner in corners]).astype(np.float32)
 
     def main(self):
         while True:
             _, frame = self.cap.read()
+            gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             if self.rect_start is not None and self.rect_end is not None:
-                cv2.rectangle(frame, self.rect_start, self.rect_end, (0, 255, 0), 2)
-                for point in self.tracking_points:
-                    x, y = point
-                    cv2.circle(frame, (x, y), 3, (0, 0, 255), -1)
+                for i, point in enumerate(self.tracking_points):
+                    new_point, status, error = cv2.calcOpticalFlowPyrLK(self.old_frame,
+                                                                        gray_frame,
+                                                                        np.array([point]),
+                                                                        None,
+                                                                        **self.lk_params)
+                    good_new = new_point[status.flatten() == 1]
+                    good_old = point[status.flatten() == 1]
+                    for new, old in zip(good_new, good_old):
+                        a, b = new.ravel()
+                        c, d = old.ravel()
+                        frame = cv2.line(frame, (int(a), int(b)), (int(c), int(d)), (0, 255, 0), 2)
+                        frame = cv2.circle(frame, (int(a), int(b)), 5, (0, 255, 0), -1)
+                    self.tracking_points[i] = good_new
+            self.old_frame = gray_frame.copy()
             cv2.imshow('Frame', frame)
             key = cv2.waitKey(1) & 0xFF
             if key in [ord('q')]:
@@ -57,5 +74,5 @@ class PoiIdentifier:
 
 
 if __name__ == '__main__':
-    tracker = PoiIdentifier(camera=0, num_points=10)
+    tracker = PoiTracker(camera=0, num_points=20)
     tracker.main()
