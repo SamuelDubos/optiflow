@@ -1,3 +1,10 @@
+"""
+TODO: Docstring
+
+Author: @SamuelDubos
+Date: January 24, 2024
+"""
+
 import numpy as np
 import cv2
 
