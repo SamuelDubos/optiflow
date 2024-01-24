@@ -3,10 +3,11 @@ import cv2
 import sys
 
 
-class ZoneTracker:
+class ZoneDelimiter:
 
-    def __init__(self, camera):
+    def __init__(self, camera, mesh=False):
         self.camera = camera
+        self.mesh = mesh
 
         self.rect_start = None
         self.rect_end = None
@@ -37,12 +38,12 @@ class ZoneTracker:
                 points.append((int(x), int(y)))
         return points
 
-    def main(self, mesh=False):
+    def main(self):
         while True:
             _, frame = self.cap.read()
             if self.rect_start is not None and self.rect_end is not None:  # TODO: Handle second rectangle
                 cv2.rectangle(frame, self.rect_start, self.rect_end, (0, 255, 0), 2)
-                if mesh:
+                if self.mesh:
                     tracked_points = self.generate_mesh()
                     for point in tracked_points:
                         cv2.circle(frame, point, 3, (0, 0, 255), -1)
@@ -54,5 +55,5 @@ class ZoneTracker:
 
 
 if __name__ == '__main__':
-    tracker = ZoneTracker(camera=0)
+    tracker = ZoneDelimiter(camera=0)
     tracker.main(bool(sys.argv[1]) if len(sys.argv) >= 2 else False)
