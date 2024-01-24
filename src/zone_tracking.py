@@ -20,6 +20,7 @@ class ZoneTracker:
         if event == cv2.EVENT_LBUTTONDOWN:
             if not self.selecting_rect:
                 print(f'Zone begins {x, y}')
+                self.rect_end = None
                 self.rect_start = (x, y)
                 self.selecting_rect = True
             else:
