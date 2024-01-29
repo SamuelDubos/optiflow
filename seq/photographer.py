@@ -12,22 +12,25 @@ import os
 
 
 class Photographer:
-    def __init__(self, images_folder):
-        self.images_folder = os.path.join('images', images_folder)
+    def __init__(self, camera, folder, run=False):
+        self.camera = camera
+        self.folder = os.path.join('images', folder)
         self.click_coordinates = []
         self.frame = None
-        self.ndarray = os.path.join('images', f'{images_folder}_coordinates.npy')
+        self.ndarray = os.path.join('images', f'{folder}_coordinates.npy')
+        self.run() if run else None
 
     def mouse_click(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
             print(f'Click Position : ({x}, {y})')
             self.click_coordinates.append((x, y))
-            image_name = os.path.join(self.images_folder, f'webcam_{len(self.click_coordinates)}.jpg')
+            index = len(os.listdir(self.folder))
+            image_name = os.path.join(self.folder, f'webcam_{index}.jpg')
             cv2.imwrite(image_name, self.frame)
             print(f'Image saved : {image_name}')
 
     def capture_webcam(self):
-        cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+        cap = cv2.VideoCapture(self.camera, cv2.CAP_DSHOW)
         if not cap.isOpened():
             print('Error: Unable to open webcam.')
             exit()
@@ -42,7 +45,10 @@ class Photographer:
         cap.release()
 
     def save_coordinates(self):
-        coordinates_array = np.array(self.click_coordinates)
+        if os.path.exists(self.ndarray):
+            coordinates_array = np.concatenate((np.load(self.ndarray), np.array(self.click_coordinates)))
+        else:
+            coordinates_array = np.array(self.click_coordinates)
         np.save(self.ndarray, coordinates_array)
         print(f'Click coordinates have been saved to {self.ndarray}.')
 
@@ -53,10 +59,10 @@ class Photographer:
         func(path)
 
     def delete(self):
-        print(f'Deleting {self.images_folder} folder')
+        print(f'Deleting {self.folder} folder')
         try:
-            n_images = len(os.listdir(self.images_folder))
-            shutil.rmtree(self.images_folder, onerror=self.onerror)
+            n_images = len(os.listdir(self.folder))
+            shutil.rmtree(self.folder, onerror=self.onerror)
             print(f'All {n_images} images have been deleted.')
         except OSError as e:
             print(f'Error: {e.filename} - {e.strerror}.')
@@ -65,12 +71,12 @@ class Photographer:
             print('Numpy ndarray file has been deleted.')
 
     def run(self):
-        if not os.path.exists(self.images_folder):
-            os.makedirs(self.images_folder)
+        if not os.path.exists(self.folder):
+            os.makedirs(self.folder)
         self.capture_webcam()
         self.save_coordinates()
 
 
 if __name__ == '__main__':
-    photographer = Photographer('CAG107')
+    photographer = Photographer(camera=0, folder='CAG107')
     photographer.run()
