@@ -20,7 +20,7 @@ class PoiTracker:
         self.tracking_points = None
         self.prev_img = None
 
-        self.cap = cv2.VideoCapture(self.camera)
+        self.cap = cv2.VideoCapture(self.camera, cv2.CAP_DSHOW)
         cv2.namedWindow('Frame')
         cv2.setMouseCallback('Frame', self.select_rect)
         self.lk_params = dict(winSize=(15, 15),

@@ -2,24 +2,34 @@
 
 ## Usage
 
-- To track a single pixel on the screen
+### 1 - To track a single pixel on the screen
 ```
-python track.py --item pixel --camera 0
-```
-
-- To select a zone on the screen
-```
-python track.py --item zone --camera 0
+python main.py --item pixel
 ```
 
-- To select a zone and draw a rough mesh
+### 2 - To select a zone on the screen
 ```
-python track.py --item zone --camera 0 --mesh
+python main.py --item zone
+```
+
+### 3 - To select a zone and draw a rough mesh
+```
+python main.py --item zone --mesh
+```
+
+### 4 - To select a zone and track it
+```
+python main.py --item poi
+```
+
+### 5 - To observe the limits of the optical flow
+```
+python main.py --item limits --folder [FOLDER_NAME] --add
 ```
 
 ## Variations
 
 - Switch to an external webcam
 ```
-python track.py --item zone --camera 1 --mesh
+python main.py --item poi --camera 1
 ```
