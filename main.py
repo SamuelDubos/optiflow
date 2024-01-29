@@ -11,8 +11,8 @@ from src.pixel_tracking import PixelTracker
 from src.zone_delimiting import ZoneDelimiter
 from src.poi_identifying import PoiIdentifier
 from src.poi_tracker import PoiTracker
-from seq.photographer import Photographer
-from seq.matcher import PhotographsMatcher
+from limits.photographer import Photographer
+from limits.matcher import PhotographsMatcher
 
 
 class Tracker:
