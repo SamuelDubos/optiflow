@@ -1,5 +1,6 @@
 """
 Main Module
+# TODO: Understand why `cv2.CAP_DSHOW` is sometimes needed in cv2.VideoCapture()
 
 Author: @SamuelDubos
 Date: January 24, 2024

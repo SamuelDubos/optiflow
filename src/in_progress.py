@@ -16,9 +16,10 @@ class PixelTracker:
 
         self.point_selected = False
         self.point = None
-        self.frames = []
+        self.old_point = None  # TODO: Rename self.point for clarity?
+        self.old_frame = None
 
-        self.cap = cv2.VideoCapture(self.camera)
+        self.cap = cv2.VideoCapture(self.camera, cv2.CAP_DSHOW)
         cv2.namedWindow('Frame')
         cv2.setMouseCallback('Frame', self.select_point)
         self.lk_params = dict(winSize=(15, 15),
@@ -27,28 +28,51 @@ class PixelTracker:
 
     def select_point(self, event, x, y, flags, param):
         if event == cv2.EVENT_LBUTTONDOWN:
+            self.point = (x, y)  # TODO: Now useless?
             self.point_selected = True
-            self.point = np.array([[x, y]], dtype=np.float32)
+            self.old_point = np.array([[x, y]], dtype=np.float32)
+
+    @staticmethod
+    def kalman_filter(point):
+        kalman = cv2.KalmanFilter(4, 2)
+        kalman.measurementMatrix = np.array([[1, 0, 0, 0],
+                                             [0, 1, 0, 0]], np.float32)
+        kalman.transitionMatrix = np.array([[1, 0, 1, 0],
+                                            [0, 1, 0, 1],
+                                            [0, 0, 1, 0],
+                                            [0, 0, 0, 1]], np.float32)
+        kalman.processNoiseCov = np.array([[1, 0, 0, 0],
+                                           [0, 1, 0, 0],
+                                           [0, 0, 1, 0],
+                                           [0, 0, 0, 1]], np.float32) * 0.03
+        measurement = np.array([[np.float32(point[0][0])], [np.float32(point[0][1])]])
+        print(measurement)
+        kalman.correct(measurement)
+        predicted_point = kalman.predict()
+        print(predicted_point)
+        return predicted_point[:2]
 
     def main(self):
         while True:
             _, frame = self.cap.read()
             gray_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             if self.point_selected:
-                new_point, status, error = cv2.calcOpticalFlowPyrLK(self.frames[0],
+                new_point, status, error = cv2.calcOpticalFlowPyrLK(self.old_frame,
                                                                     gray_frame,
-                                                                    self.point,
+                                                                    self.old_point,
                                                                     None,
                                                                     **self.lk_params)
                 good_new = new_point[status.flatten() == 1]
-                good_old = self.point[status.flatten() == 1]
+                good_old = self.old_point[status.flatten() == 1]
                 for new, old in zip(good_new, good_old):
                     a, b = new.ravel()
                     c, d = old.ravel()
                     frame = cv2.line(frame, (int(a), int(b)), (int(c), int(d)), (0, 255, 0), 2)
                     frame = cv2.circle(frame, (int(a), int(b)), 5, (0, 255, 0), -1)
-                    frame = cv2.circle(frame, (int(c), int(d)), 5, (0, 0, 255), -1)
-            self.frames.append(gray_frame.copy())
+                a, b = self.kalman_filter(self.old_point)
+                frame = cv2.circle(frame, (int(a), int(b)), 5, (255, 0, 0), -1)
+                self.old_point = good_new
+            self.old_frame = gray_frame.copy()
             cv2.imshow('Frame', frame)
             key = cv2.waitKey(1) & 0xFF
             if key in [ord('q')]:
