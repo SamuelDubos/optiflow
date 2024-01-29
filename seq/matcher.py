@@ -4,13 +4,10 @@ TODO: Docstring
 Author: @SamuelDubos
 Date: January 29, 2024
 """
-import time
 
 import numpy as np
 import cv2
 import os
-
-from photographer import Photographer
 
 
 class PhotographsMatcher:
@@ -61,13 +58,3 @@ class PhotographsMatcher:
             if key in [ord('q')]:
                 break
         cv2.destroyAllWindows()
-
-
-if __name__ == '__main__':
-    # Take the screenshots
-    camera = 1
-    photographer = Photographer(camera=camera, folder='Pen', run=False)
-
-    # Track the pixels in the video
-    tracker = PhotographsMatcher(camera=camera, photographer=photographer)
-    tracker.main()

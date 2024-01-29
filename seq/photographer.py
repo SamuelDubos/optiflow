@@ -14,10 +14,10 @@ import os
 class Photographer:
     def __init__(self, camera, folder, run=False):
         self.camera = camera
-        self.folder = os.path.join('images', folder)
+        self.folder = os.path.join('seq', 'images', folder)
         self.click_coordinates = []
         self.frame = None
-        self.ndarray = os.path.join('images', f'{folder}_coordinates.npy')
+        self.ndarray = os.path.join('seq', 'images', f'{folder}_coordinates.npy')
         self.run() if run else None
 
     def mouse_click(self, event, x, y, flags, param):

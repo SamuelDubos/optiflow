@@ -11,7 +11,8 @@ from src.pixel_tracking import PixelTracker
 from src.zone_delimiting import ZoneDelimiter
 from src.poi_identifying import PoiIdentifier
 from src.poi_tracker import PoiTracker
-from seq.matcher import Photographer, PhotographsMatcher
+from seq.photographer import Photographer
+from seq.matcher import PhotographsMatcher
 
 
 class Tracker:
@@ -55,7 +56,7 @@ class Tracker:
                             help='Track the Points Of Interest (only for item == poi)')
         parser.add_argument('--folder', type=str, default='',
                             help='Select the folder (only for item == limits)')
-        parser.add_argument('--run', action='store_false',
+        parser.add_argument('--add', action='store_true',
                             help='Take new screenshots (only for item == limits)')
         return parser.parse_args()
 
@@ -79,7 +80,7 @@ class Tracker:
         elif self.args.item == 'limits':
             photographer = Photographer(camera=self.args.camera,
                                         folder=self.args.folder,
-                                        run=self.args.run)
+                                        run=self.args.add)
             PhotographsMatcher(camera=self.args.camera,
                                photographer=photographer).main()
 
