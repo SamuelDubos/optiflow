@@ -87,4 +87,5 @@ class Tracker:
 
 
 if __name__ == '__main__':
+    # Create a Tracker object
     Tracker().main()
