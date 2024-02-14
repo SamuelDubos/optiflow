@@ -1,8 +1,8 @@
 """
-TODO: Docstring
+Point of Interest (POI) Identifier: A utility to identify points of interest within a selected region.
 
 Author: @SamuelDubos
-Date: January 24, 2024
+Date: February 14, 2024
 """
 
 import numpy as np
@@ -10,7 +10,15 @@ import cv2
 
 
 class PoiIdentifier:
+
     def __init__(self, camera, num_points):
+        """
+        Initialize the POI Identifier object.
+
+        Parameters:
+        - camera: Index of the camera to use for video capture.
+        - num_points: Number of points of interest to identify.
+        """
         self.camera = camera
         self.num_points = num_points
         self.rect_start = None
@@ -18,11 +26,23 @@ class PoiIdentifier:
         self.selecting_rect = False
         self.tracking_points = []
 
+        # Initialize video capture
         self.cap = cv2.VideoCapture(self.camera)
+
+        # Create a window and set mouse callback function
         cv2.namedWindow('Frame')
         cv2.setMouseCallback('Frame', self.select_rect)
 
     def select_rect(self, event, x, y, flags, param):
+        """
+        Mouse callback function to select a rectangle on the screen and identify points of interest within it.
+
+        Parameters:
+        - event: Type of mouse event.
+        - x, y: Coordinates of the mouse cursor.
+        - flags: Additional flags.
+        - param: Additional parameters.
+        """
         if event == cv2.EVENT_LBUTTONDOWN:
             if not self.selecting_rect:
                 print(f'Zone begins {x, y}')
@@ -37,6 +57,15 @@ class PoiIdentifier:
                 self.tracking_points = self.generate_poi(frame)
 
     def generate_poi(self, frame):
+        """
+        Generate points of interest within the selected rectangle.
+
+        Parameters:
+        - frame: Image frame from which points of interest are generated.
+
+        Returns:
+        - List of points of interest.
+        """
         if self.rect_start is not None and self.rect_end is not None:
             x_min, y_min = np.min([self.rect_start, self.rect_end], axis=0).ravel()
             x_max, y_max = np.max([self.rect_start, self.rect_end], axis=0).ravel()
@@ -49,6 +78,9 @@ class PoiIdentifier:
             return corners.astype(int)
 
     def main(self):
+        """
+        Main function to select a region and identify points of interest within it.
+        """
         while True:
             _, frame = self.cap.read()
             if self.rect_start is not None and self.rect_end is not None:
@@ -64,5 +96,7 @@ class PoiIdentifier:
 
 
 if __name__ == '__main__':
+    # Create a PoiIdentifier object with camera index 0 and 10 points of interest
     tracker = PoiIdentifier(camera=0, num_points=10)
+    # Start the main functionality to identify points of interest
     tracker.main()
