@@ -1,8 +1,9 @@
 """
-TODO: Docstring
+Point of Interest (POI) Tracker: A utility to track points of interest
+within a selected region using Lucas-Kanade method.
 
 Author: @SamuelDubos
-Date: January 24, 2024
+Date: February 14, 2024
 """
 
 import numpy as np
@@ -12,6 +13,13 @@ import cv2
 class PoiTracker:
 
     def __init__(self, camera, num_points):
+        """
+        Initialize the POI Tracker object.
+
+        Parameters:
+        - camera: Index of the camera to use for video capture.
+        - num_points: Number of points of interest to track.
+        """
         self.camera = camera
         self.num_points = num_points
         self.rect_start = None
@@ -20,14 +28,28 @@ class PoiTracker:
         self.tracking_points = None
         self.prev_img = None
 
+        # Initialize video capture
         self.cap = cv2.VideoCapture(self.camera, cv2.CAP_DSHOW)
+
+        # Create a window and set mouse callback function
         cv2.namedWindow('Frame')
         cv2.setMouseCallback('Frame', self.select_rect)
+
+        # Parameters for Lucas-Kanade optical flow
         self.lk_params = dict(winSize=(15, 15),
                               maxLevel=2,
                               criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
     def select_rect(self, event, x, y, flags, param):
+        """
+        Mouse callback function to select a rectangle on the screen.
+
+        Parameters:
+        - event: Type of mouse event.
+        - x, y: Coordinates of the mouse cursor.
+        - flags: Additional flags.
+        - param: Additional parameters.
+        """
         if event == cv2.EVENT_LBUTTONDOWN:
             if not self.selecting_rect:
                 print(f'Zone begins {x, y}')
@@ -42,6 +64,15 @@ class PoiTracker:
                 self.tracking_points = self.generate_poi(frame)
 
     def generate_poi(self, frame):
+        """
+        Generate points of interest within the selected rectangle.
+
+        Parameters:
+        - frame: Image frame from which points of interest are generated.
+
+        Returns:
+        - Array of points of interest.
+        """
         if self.rect_start is not None and self.rect_end is not None:
             x_min, y_min = np.min([self.rect_start, self.rect_end], axis=0).ravel()
             x_max, y_max = np.max([self.rect_start, self.rect_end], axis=0).ravel()
@@ -54,6 +85,9 @@ class PoiTracker:
             return np.array([[corner] for corner in corners]).astype(np.float32)
 
     def main(self):
+        """
+        Main function to track points of interest using Lucas-Kanade method.
+        """
         while True:
             _, frame = self.cap.read()
             next_img = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
@@ -86,7 +120,7 @@ class PoiTracker:
 
 
 if __name__ == '__main__':
+    # Create a PoiTracker object with camera index 0 and 20 points of interest
     tracker = PoiTracker(camera=0, num_points=20)
-    print(tracker.camera)
-    print('hi')
+    # Start tracking points of interest
     tracker.main()
