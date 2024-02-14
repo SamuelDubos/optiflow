@@ -1,8 +1,9 @@
 """
-TODO: Docstring
+PhotographsMatcher: A utility to match pixels in real-time
+with pixels saved from previous photographs.
 
 Author: @SamuelDubos
-Date: January 29, 2024
+Date: February 14, 2024
 """
 
 import numpy as np
@@ -13,6 +14,13 @@ import os
 class PhotographsMatcher:
 
     def __init__(self, camera, photographer):
+        """
+        Initialize the PhotographsMatcher object.
+
+        Parameters:
+        - camera: Index of the camera to use for video capture.
+        - photographer: Instance of the Photographer class to access captured photographs and coordinates.
+        """
         self.camera = camera
         self.photographer = photographer
         self.points = np.load(self.photographer.ndarray)
@@ -21,13 +29,19 @@ class PhotographsMatcher:
         self.frames = []
         self.found = 0
 
+        # Initialize video capture
         self.cap = cv2.VideoCapture(self.camera, cv2.CAP_DSHOW)
         cv2.namedWindow('Frame')
+
+        # Parameters for Lucas-Kanade optical flow
         self.lk_params = dict(winSize=(15, 15),
                               maxLevel=2,
                               criteria=(cv2.TERM_CRITERIA_EPS | cv2.TERM_CRITERIA_COUNT, 10, 0.03))
 
     def main(self):
+        """
+        Main function to match pixels in real-time with pixels saved from previous photographs.
+        """
         while True:
             self.found = 0
             _, frame = self.cap.read()
