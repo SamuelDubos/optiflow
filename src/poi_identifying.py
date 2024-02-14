@@ -1,5 +1,6 @@
 """
-Point of Interest (POI) Identifier: A utility to identify points of interest within a selected region.
+Point of Interest (POI) Identifier: A utility to identify points of
+interest within a selected region.
 
 Author: @SamuelDubos
 Date: February 14, 2024
